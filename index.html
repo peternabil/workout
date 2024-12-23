@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Workout & Meal Plan</title>
+    <link rel="icon" href="favico.png" type="image/jpg" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap"
       rel="stylesheet"
@@ -88,9 +89,15 @@
       }
 
       /* Tabs Section */
+      .tabs img {
+        height: 40px; /* Adjust the size */
+        margin-right: 10px;
+      }
+
       .tabs {
         display: flex;
         justify-content: center;
+        align-items: center; /* Align items vertically */
         background-color: #1e1e1e;
         padding: 10px 20px;
         border-radius: 8px;
@@ -221,7 +228,6 @@
         color: #000000;
       }
 
-
       .workout-table tr {
         transition: background-color 0.3s ease;
       }
@@ -290,6 +296,7 @@
   <body>
     <div class="container">
       <div class="tabs">
+        <img src="favico.png" alt="Icon" />
         <button class="tab-button active" onclick="showTab('workout')">
           Workout
         </button>
