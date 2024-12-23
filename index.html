@@ -1,497 +1,623 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Workout & Meal Plan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap"
-        rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+      /* Global Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        .container {
-            width: 80%;
-            margin: auto;
-            transition: width 0.3s ease;
-        }
+      /* Dark Theme */
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #121212;
+        color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
 
+      .container {
+        max-width: 900px;
+        width: 100%;
+        background-color: #1e1e1e;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+      }
+
+      h1,
+      h2 {
+        color: #b3a729;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      p {
+        color: #b0b0b0;
+        margin-bottom: 20px;
+      }
+
+      section {
+        margin-bottom: 40px;
+      }
+
+      input,
+      textarea,
+      button {
+        width: 100%;
+        margin-top: 10px;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+      }
+
+      input,
+      textarea {
+        background-color: #2a2a2a;
+        color: #e0e0e0;
+      }
+
+      button {
+        background-color: #b3a729;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #807712;
+      }
+
+      iframe {
+        width: 100%;
+        height: 250px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+
+      /* Tabs Section */
+      .tabs {
+        display: flex;
+        justify-content: center;
+        background-color: #1e1e1e;
+        padding: 10px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        margin-bottom: 20px;
+      }
+
+      .tab-button {
+        padding: 12px 24px;
+        background-color: #333;
+        border: none;
+        color: #b3a729;
+        font-weight: 600;
+        border-radius: 6px;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .tab-button.active {
+        background-color: #b3a729;
+        color: #121212;
+      }
+
+      .tab-content {
+        padding: 10px;
+        display: none;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        transition: opacity 0.3s ease-in-out;
+      }
+
+      .tab-content.active {
+        display: block;
+        opacity: 1;
+      }
+
+      .meal-cards-container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      /* Meal Card */
+      .meal-card {
+        background-color: #252525;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: fit-content;
+        transition: box-shadow 0.3s ease;
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .meal-card img {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-bottom: 15px;
+      }
+
+      .meal-card h3 {
+        font-weight: 600;
+        color: #b3a729;
+        margin: 5px 0;
+      }
+
+      .meal-card p {
+        font-size: 14px;
+        color: #ccc;
+      }
+      .day-workout {
+        width: 100%;
+      }
+
+      .day-workout h3 {
+        margin-bottom: 20px;
+        margin-top: 20px;
+        color: #b3a729;
+      }
+
+      /* Workout Table */
+      .workout-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #222;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+        transition: box-shadow 0.3s ease;
+        table-layout: fixed; /* Prevent table from expanding beyond its container */
+        max-width: 100%; /* Ensure table fits within its container */
+        overflow-x: auto; /* Enable horizontal scrolling */
+      }
+
+      .workout-table th,
+      .workout-table td {
+        padding: 18px 24px;
+        text-align: center;
+        color: #e0e0e0;
+        font-size: 16px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .workout-table th {
+        background-color: #000000;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .workout-table tr:nth-child(odd) {
+        background-color: #000000; /* Darker background for odd rows */
+      }
+
+      .workout-table tr:nth-child(even) {
+        background-color: #aa9f03; /* Lighter background for even rows */
+        color: #000000;
+      }
+
+      .workout-table tr:nth-child(even) td {
+        color: #000000;
+      }
+
+
+      .workout-table tr {
+        transition: background-color 0.3s ease;
+      }
+
+      .workout-table tr:hover {
+        background-color: #3a3a3a;
+        transform: scale(1.02);
+      }
+
+      .workout-table tr:active {
+        background-color: #444;
+      }
+
+      .workout-table th,
+      .workout-table td {
+        border: none; /* Removed border to match Material UI look */
+      }
+
+      .workout-table th:first-child,
+      .workout-table td:first-child {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+      }
+
+      .workout-table th:last-child,
+      .workout-table td:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+      }
+
+      .workout-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .section-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #b3a729;
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      .month-goal {
+        font-size: 18px;
+        color: #ddd;
+        text-align: center;
+      }
+
+      .tab-button:focus {
+        outline: none;
+      }
+
+      @media (max-width: 768px) {
         .tabs {
-            display: flex;
-            justify-content: center;
-            background: linear-gradient(90deg, #1f1f1f, #333);
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .tab-button {
-            padding: 12px 24px;
-            background-color: #444;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            border-radius: 8px;
-            margin: 0 10px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        .tab-button:hover {
-            background-color: #555;
-            transform: scale(1.05);
-        }
-
-        .tab-button.active {
-            background-color: #ff6347;
-            transform: scale(1.1);
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px;
-            margin-top: 20px;
-            background-color: #1f1f1f;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .meal-card {
-            background-color: #1f1f1f;
-            margin: 15px;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
-        }
-
-        .meal-card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-            transform: translateY(-5px);
-        }
-
-        .meal-card img {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .meal-card h3 {
-            font-weight: 600;
-            color: #ff6347;
-            margin: 10px 0;
-        }
-
-        .meal-card p {
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        .workout-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #222;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .workout-table th,
-        .workout-table td {
-            padding: 15px;
-            border: 1px solid #444;
-            text-align: center;
-            color: #ddd;
-        }
-
-        .workout-table th {
-            background-color: #333;
-        }
-
-        .workout-table td {
-            background-color: #222;
+          flex-direction: column;
+          align-items: center;
         }
 
         .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #ff6347;
-            margin-top: 30px;
-            text-align: center;
+          font-size: 28px;
         }
-
-        .month-goal {
-            font-size: 18px;
-            color: #ddd;
-            text-align: center;
-        }
-
-        .tab-button:focus {
-            outline: none;
-        }
-
-        @media (max-width: 768px) {
-            .tabs {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .meal-card {
-                width: 90%;
-            }
-
-            .container {
-                width: 95%;
-            }
-
-            .section-title {
-                font-size: 24px;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="tabs">
-            <button class="tab-button active" onclick="showTab('workout')">Workout</button>
-            <button class="tab-button" onclick="showTab('meal')">Meals</button>
-        </div>
+      <div class="tabs">
+        <button class="tab-button active" onclick="showTab('workout')">
+          Workout
+        </button>
+        <button class="tab-button" onclick="showTab('meal')">Meals</button>
+      </div>
 
-        <div id="workout" class="tab-content active">
-            <!-- Workout plan will be injected dynamically -->
-        </div>
+      <div id="workout" class="tab-content active">
+        <!-- Workout plan will be injected dynamically -->
+      </div>
 
-        <div id="meal" class="tab-content">
-            <h2 class="section-title">Meal Plan</h2>
-            <div id="meal-cards-container" class="meal-cards-container">
-                <!-- Meal cards will be injected here dynamically -->
-            </div>
+      <div id="meal" class="tab-content">
+        <h2 class="section-title">Meal Plan</h2>
+        <div id="meal-cards-container" class="meal-cards-container">
+          <!-- Meal cards will be injected here dynamically -->
         </div>
+      </div>
     </div>
 
     <script>
-        // JSON data for meal and workout plans
-        const data = {
-            "meals": [
-                {
-                    "name": "Egg Whites Omelette",
-                    "image": "https://via.placeholder.com/250x150",
-                    "ingredients": "6 egg whites, 1 whole egg, spinach, mushrooms, olive oil",
-                    "instructions": "Cook eggs and veggies in olive oil. Season to taste."
-                },
-                {
-                    "name": "Grilled Chicken Salad",
-                    "image": "https://via.placeholder.com/250x150",
-                    "ingredients": "Chicken breast, mixed greens, avocado, olive oil, vinegar",
-                    "instructions": "Grill chicken, slice it, and toss with fresh greens and avocado."
-                },
-                {
-                    "name": "Vince Gironda's Steak & Eggs",
-                    "image": "https://via.placeholder.com/250x150",
-                    "ingredients": "Rib-eye steak, 3 whole eggs, butter",
-                    "instructions": "Grill steak to your liking and serve with fried eggs and butter."
-                },
-                {
-                    "name": "Protein Shake",
-                    "image": "https://via.placeholder.com/250x150",
-                    "ingredients": "Whey protein, almond milk, banana, peanut butter",
-                    "instructions": "Blend all ingredients into a smooth shake."
-                },
-                {
-                    "name": "Chicken Breast with Asparagus",
-                    "image": "https://via.placeholder.com/250x150",
-                    "ingredients": "Chicken breast, asparagus, olive oil, garlic",
-                    "instructions": "Grill chicken and sauté asparagus with garlic and olive oil."
-                },
-                {
-                    "name": "Tuna Salad with Avocado",
-                    "image": "https://via.placeholder.com/250x150",
-                    "ingredients": "Tuna, avocado, olive oil, lemon, mixed greens",
-                    "instructions": "Mix tuna with avocado, olive oil, and lemon juice. Serve over greens."
-                }
+      // JSON data for meal and workout plans
+      const data = {
+        meals: [
+          {
+            name: "Egg Whites Omelette",
+            image: "https://via.placeholder.com/250x150",
+            ingredients:
+              "6 egg whites, 1 whole egg, spinach, mushrooms, olive oil",
+            instructions:
+              "Cook eggs and veggies in olive oil. Season to taste.",
+          },
+          {
+            name: "Grilled Chicken Salad",
+            image: "https://via.placeholder.com/250x150",
+            ingredients:
+              "Chicken breast, mixed greens, avocado, olive oil, vinegar",
+            instructions:
+              "Grill chicken, slice it, and toss with fresh greens and avocado.",
+          },
+          {
+            name: "Vince Gironda's Steak & Eggs",
+            image: "https://via.placeholder.com/250x150",
+            ingredients: "Rib-eye steak, 3 whole eggs, butter",
+            instructions:
+              "Grill steak to your liking and serve with fried eggs and butter.",
+          },
+          {
+            name: "Protein Shake",
+            image: "https://via.placeholder.com/250x150",
+            ingredients: "Whey protein, almond milk, banana, peanut butter",
+            instructions: "Blend all ingredients into a smooth shake.",
+          },
+          {
+            name: "Chicken Breast with Asparagus",
+            image: "https://via.placeholder.com/250x150",
+            ingredients: "Chicken breast, asparagus, olive oil, garlic",
+            instructions:
+              "Grill chicken and sauté asparagus with garlic and olive oil.",
+          },
+          {
+            name: "Tuna Salad with Avocado",
+            image: "https://via.placeholder.com/250x150",
+            ingredients: "Tuna, avocado, olive oil, lemon, mixed greens",
+            instructions:
+              "Mix tuna with avocado, olive oil, and lemon juice. Serve over greens.",
+          },
+        ],
+        workout: [
+          {
+            month: "Month 1 - Foundation Building",
+            goal: "Goal: Build muscle endurance and get used to the exercises.",
+            days: [
+              {
+                name: "Day 1: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 2: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 3: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 4: Rest or Light Cardio",
+                exercises: [],
+              },
+              {
+                name: "Day 5: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 6: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 7: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
             ],
-            "workout": [
-                {
-                    "month": "Month 1 - Foundation Building",
-                    "goal": "Goal: Build muscle endurance and get used to the exercises.",
-                    "days": [
-                        {
-                            "name": "Day 1: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 2: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 3: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 4: Rest or Light Cardio",
-                            "exercises": []
-                        },
-                        {
-                            "name": "Day 5: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 6: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 7: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "month": "Month 2 - Strength & Power",
-                    "goal": "Goal: Increase strength with heavy lifts and compound movements.",
-                    "days": [
-                        {
-                            "name": "Day 1: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 2: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 3: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 4: Rest or Light Cardio",
-                            "exercises": []
-                        },
-                        {
-                            "name": "Day 5: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 6: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 7: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "month": "Month 3 - Advanced Strength & Conditioning",
-                    "goal": "Goal: Continue to build strength and start incorporating conditioning.",
-                    "days": [
-                        {
-                            "name": "Day 1: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 2: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 3: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 4: Rest or Light Cardio",
-                            "exercises": []
-                        },
-                        {
-                            "name": "Day 5: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 6: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 7: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "month": "Month 4 - Maximizing Strength Gains",
-                    "goal": "Goal: Focus on maximizing strength gains by increasing intensity with compound movements.",
-                    "days": [
-                        {
-                            "name": "Day 1: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 2: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 3: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 4: Rest or Light Cardio",
-                            "exercises": []
-                        },
-                        {
-                            "name": "Day 5: Chest & Back",
-                            "exercises": [
-                                { "name": "Bench Press", "sets": 8, "reps": "8" },
-                                { "name": "Incline Dumbbell Press", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 6: Legs",
-                            "exercises": [
-                                { "name": "Squats", "sets": 8, "reps": "8" },
-                                { "name": "Leg Curls", "sets": 8, "reps": "8" }
-                            ]
-                        },
-                        {
-                            "name": "Day 7: Shoulders & Arms",
-                            "exercises": [
-                                { "name": "Shoulder Press", "sets": 8, "reps": "8" },
-                                { "name": "Lateral Raises", "sets": 8, "reps": "8" },
-                                { "name": "Barbell Curls", "sets": 8, "reps": "8" },
-                                { "name": "Tricep Pushdowns", "sets": 8, "reps": "8" }
-                            ]
-                        }
-                    ]
-                }
+          },
+          {
+            month: "Month 2 - Strength & Power",
+            goal: "Goal: Increase strength with heavy lifts and compound movements.",
+            days: [
+              {
+                name: "Day 1: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 2: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 3: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 4: Rest or Light Cardio",
+                exercises: [],
+              },
+              {
+                name: "Day 5: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 6: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 7: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
             ],
-        };
+          },
+          {
+            month: "Month 3 - Advanced Strength & Conditioning",
+            goal: "Goal: Continue to build strength and start incorporating conditioning.",
+            days: [
+              {
+                name: "Day 1: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 2: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 3: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 4: Rest or Light Cardio",
+                exercises: [],
+              },
+              {
+                name: "Day 5: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 6: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 7: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
+            ],
+          },
+          {
+            month: "Month 4 - Maximizing Strength Gains",
+            goal: "Goal: Focus on maximizing strength gains by increasing intensity with compound movements.",
+            days: [
+              {
+                name: "Day 1: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 2: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 3: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 4: Rest or Light Cardio",
+                exercises: [],
+              },
+              {
+                name: "Day 5: Chest & Back",
+                exercises: [
+                  { name: "Bench Press", sets: 8, reps: "8" },
+                  { name: "Incline Dumbbell Press", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 6: Legs",
+                exercises: [
+                  { name: "Squats", sets: 8, reps: "8" },
+                  { name: "Leg Curls", sets: 8, reps: "8" },
+                ],
+              },
+              {
+                name: "Day 7: Shoulders & Arms",
+                exercises: [
+                  { name: "Shoulder Press", sets: 8, reps: "8" },
+                  { name: "Lateral Raises", sets: 8, reps: "8" },
+                  { name: "Barbell Curls", sets: 8, reps: "8" },
+                  { name: "Tricep Pushdowns", sets: 8, reps: "8" },
+                ],
+              },
+            ],
+          },
+        ],
+      };
 
-        // Function to show active tab
-        function showTab(tab) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tabContent => tabContent.classList.remove('active'));
-            document.getElementById(tab).classList.add('active');
+      // Function to show active tab
+      function showTab(tab) {
+        const tabs = document.querySelectorAll(".tab-content");
+        tabs.forEach((tabContent) => tabContent.classList.remove("active"));
+        document.getElementById(tab).classList.add("active");
 
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
-            event.target.classList.add('active');
-        }
+        const tabButtons = document.querySelectorAll(".tab-button");
+        tabButtons.forEach((button) => button.classList.remove("active"));
+        event.target.classList.add("active");
+      }
 
-        // Function to show workout day
-        function showDay(dayName) {
-            const daySections = document.querySelectorAll('.day-workout');
-            daySections.forEach(day => {
-                if (day.id === dayName) {
-                    day.classList.toggle('active');
-                } else {
-                    day.classList.remove('active');
-                }
-            });
-        }
+      // Function to show workout day
+      function showDay(dayName) {
+        const daySections = document.querySelectorAll(".day-workout");
+        daySections.forEach((day) => {
+          if (day.id === dayName) {
+            day.classList.toggle("active");
+          } else {
+            day.classList.remove("active");
+          }
+        });
+      }
 
-        // Function to render workout data
-        function renderWorkout() {
-            const workoutContainer = document.getElementById('workout');
-            data.workout.forEach(month => {
-                let monthSection = document.createElement('div');
-                monthSection.innerHTML = `
+      // Function to render workout data
+      function renderWorkout() {
+        const workoutContainer = document.getElementById("workout");
+        data.workout.forEach((month) => {
+          let monthSection = document.createElement("div");
+          monthSection.innerHTML = `
                     <h2 class="section-title">${month.month}</h2>
                     <p class="month-goal">${month.goal}</p>
-                    <div>
-                        ${month.days.map(day => `
-                            <button class="tab-button" onclick="showDay('${day.name}')">${day.name}</button>
-                        `).join('')}
-                    </div>
-                    ${month.days.map(day => `
+                    ${month.days
+                      .map(
+                        (day) => `
                         <div id="${day.name}" class="day-workout">
                             <h3>${day.name}</h3>
                             <table class="workout-table">
@@ -500,43 +626,47 @@
                                     <th>Sets</th>
                                     <th>Reps</th>
                                 </tr>
-                                ${day.exercises.map(exercise => `
+                                ${day.exercises
+                                  .map(
+                                    (exercise) => `
                                     <tr>
                                         <td>${exercise.name}</td>
                                         <td>${exercise.sets}</td>
                                         <td>${exercise.reps}</td>
                                     </tr>
-                                `).join('')}
+                                `
+                                  )
+                                  .join("")}
                             </table>
                         </div>
-                    `).join('')}
+                    `
+                      )
+                      .join("")}
                 `;
-                workoutContainer.appendChild(monthSection);
-            });
-        }
+          workoutContainer.appendChild(monthSection);
+        });
+      }
 
-        // Function to render meal cards dynamically
-        function renderMeals() {
-            const mealContainer = document.getElementById('meal-cards-container');
-            data.meals.forEach(meal => {
-                const card = document.createElement('div');
-                card.classList.add('meal-card');
-                card.innerHTML = `
-                    <img src="${meal.image}" alt="${meal.name}">
+      // Function to render meal cards dynamically
+      function renderMeals() {
+        const mealContainer = document.getElementById("meal-cards-container");
+        data.meals.forEach((meal) => {
+          const card = document.createElement("div");
+          card.classList.add("meal-card");
+          card.innerHTML = `
                     <h3>${meal.name}</h3>
                     <p><strong>Ingredients:</strong> ${meal.ingredients}</p>
                     <p><strong>Instructions:</strong> ${meal.instructions}</p>
                 `;
-                mealContainer.appendChild(card);
-            });
-        }
-
-        // Wait for DOMContentLoaded before executing the JavaScript code
-        document.addEventListener('DOMContentLoaded', function () {
-            renderWorkout();
-            renderMeals();
+          mealContainer.appendChild(card);
         });
-    </script>
-</body>
+      }
 
+      // Wait for DOMContentLoaded before executing the JavaScript code
+      document.addEventListener("DOMContentLoaded", function () {
+        renderWorkout();
+        renderMeals();
+      });
+    </script>
+  </body>
 </html>
